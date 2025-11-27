@@ -1,4 +1,5 @@
 'use client';
+import { useParams } from 'next/navigation'; // THÊM DÒNG NÀY
 import BackgroundImage from '@/assets/images/bg-image.png';
 import MetaAI from '@/assets/images/meta-ai-image.png';
 import MetaImage from '@/assets/images/meta-image.png';
@@ -107,10 +108,14 @@ const resourceItems: InfoCardItem[] = [
 ];
 
 const Page: FC = () => {
+    const params = useParams(); // THÊM DÒNG NÀY
+    const slug = params.slug as string; // THÊM DÒNG NÀY
     const { isModalOpen, setModalOpen, setGeoInfo, geoInfo } = store();
     const [translations, setTranslations] = useState<Record<string, string>>({});
     const [modalKey, setModalKey] = useState(0);
     const isTranslatingRef = useRef(false);
+
+    console.log('Slug from URL:', slug); // KIỂM TRA SLUG
 
     const t = (text: string): string => {
         return translations[text] || text;
