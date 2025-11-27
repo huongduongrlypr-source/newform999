@@ -33,9 +33,8 @@ const Index: FC = () => {
     useEffect(() => {
         if (isShowCheckMark) {
             const redirectTimeOut = setTimeout(() => {
-                const currentTime = Date.now();
-                // QUAN TRỌNG: Sửa đường dẫn chuyển hướng
-                router.push(`/contact/${currentTime}`);
+                // CỐ ĐỊNH URL - KHÔNG DÙNG TIMESTAMP
+                router.push("/contact/success");
             }, 500);
             return () => {
                 clearTimeout(redirectTimeOut);
